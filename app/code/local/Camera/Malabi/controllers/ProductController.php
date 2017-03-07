@@ -4,6 +4,49 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
 {
 
 
+
+    public function createuserAction(){
+
+
+        try {
+            $datas = array('firstName' => 'John',
+                'lastName' => 'Smith',
+                'userEmail' => rand(1,222).'_test@camera51.com',
+                'userPassword' => 'Abcd1234',
+                'customerId' => '405',
+                'customerToken' => 'qaq2254a-75b8-40ff-9ef8-2c6ad9cfa13a',
+                'acceptsMail' => 'true',
+            );
+//$url = "https://users.malabi.co/UsersServer/v1/retrieveUserData";
+            $url = "https://users.malabi.co/UsersServer/v1/createUser";
+            $json = json_encode($datas);
+            $client = new Zend_Http_Client($url);
+            $client->setHeaders('Content-type','application/json');
+
+           // var_dump($json);
+            $response =$client->setRawData($json, null)->request('POST');
+            //var_dump($response);
+            $result = json_decode($response->getBody (),true);
+            echo '<pre>';
+            print_r($result);
+
+
+
+            exit;
+
+
+            echo $result->userToken;
+
+            echo $result;
+
+//echo $response->getBody();
+        } catch (Exception $ex) {
+            echo $ex;
+        }
+
+
+    }
+
     public function addimageAction()
     {
 
@@ -108,6 +151,28 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
                 $userId = '3669';
                 // end EXAMPLE
 
+                //check subscription
+                if($this->checkSubscription($userId, $token ) == 0){
+                    echo json_encode(
+                        [
+                            'status' => 'fail',
+                            'subscription' => 'notactive'
+                        ]
+                    );
+                    exit;
+                }
+                if($this->checkSubscription($userId, $token ) == -1){
+                    echo json_encode(
+                        [
+                            'status' => 'fail',
+                            'subscription' => 'not-available',
+                            'message' => 'could not retrieve info, check your Malabi Account'
+                        ]
+                    );
+                    exit;
+                }
+
+
                 try {
                     $result = $this->getImage(
                         $originalUrl,
@@ -145,6 +210,38 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
         exit;
     }
 
+    private function checkSubscription($userId, $token){
+
+        $datas = array(
+            'userId' => $userId,
+            'token' => $token,
+        );
+        $url = "https://users.malabi.co/UsersServer/v1/getUserCredit";
+        $json = json_encode($datas);
+
+        $client = new Zend_Http_Client($url);
+        $client->setHeaders('Content-type','application/json');
+        $response =$client->setRawData($json, null)->request('POST');
+
+        $result = json_decode($response->getBody (),true);
+
+
+        if(isset($responseDataRaw['status']) && $responseDataRaw['status'] == "fail") {
+           return -1;
+        }
+
+        if(isset($responseDataRaw['status']) && $responseDataRaw['status'] == "success") {
+            if(isset($responseDataRaw['userCredit']) && $responseDataRaw['userCredit'] >0 ) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        return -1;
+
+
+    }
 
 
 
