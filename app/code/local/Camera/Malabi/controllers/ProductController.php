@@ -214,7 +214,7 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
 
         $datas = array(
             'userId' => $userId,
-            'token' => $token,
+            'userToken' => $token,
         );
         $url = "https://users.malabi.co/UsersServer/v1/getUserCredit";
         $json = json_encode($datas);
@@ -223,9 +223,7 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
         $client->setHeaders('Content-type','application/json');
         $response =$client->setRawData($json, null)->request('POST');
 
-        $result = json_decode($response->getBody (),true);
-
-
+        $responseDataRaw = json_decode($response->getBody (),true);
         if(isset($responseDataRaw['status']) && $responseDataRaw['status'] == "fail") {
            return -1;
         }
@@ -239,7 +237,6 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
         }
 
         return -1;
-
 
     }
 
