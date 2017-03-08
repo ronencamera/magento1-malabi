@@ -73,22 +73,22 @@ $_block = $this;
                     <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;border: 1px solid rgba(174, 174, 174, 0);" alt="" />
 
 				<script type="text/javascript">
-                    Event.observe(window, "load", function(){
-                        <?php echo $_block->getJsObjectName(); ?>.malabiAddRow = function() {
-                            var newImage = {};
-                            newImage.url = "http://ec2-54-82-245-66.compute-1.amazonaws.com/media/catalog/product/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.url;
-                            newImage.file = "/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.file;
-                            newImage.label = '';
-                            newImage.position = this.getNextPosition();
-                            newImage.disabled = 0;
-                            newImage.removed = 0;
-                            this.images.push(newImage);
-                            this.container.setHasChanges();
-                            this.updateImages();
-
-                            console.log(this.images);
-                        };
-                    });
+//                    Event.observe(window, "load", function(){
+//                        <?php //echo $_block->getJsObjectName(); ?>//.malabiAddRow = function() {
+//                            var newImage = {};
+//                            newImage.url = "http://ec2-54-82-245-66.compute-1.amazonaws.com/media/catalog/product/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.url;
+//                            newImage.file = "/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.file;
+//                            newImage.label = '';
+//                            newImage.position = this.getNextPosition();
+//                            newImage.disabled = 0;
+//                            newImage.removed = 0;
+//                            this.images.push(newImage);
+//                            this.container.setHasChanges();
+//                            this.updateImages();
+//
+//                            console.log(this.images);
+//                        };
+//                    });
                     function addImage(ele){
                         console.log(ele);
                         var eleImage = $(ele).up().siblings()[0];
@@ -104,6 +104,7 @@ $_block = $this;
                                 //   $('parent_id').update(transport.responseText);
                                 // alert(transport.responseText);
                                 console.log(transport.responseText);
+
                                 Dialog.alert("Enhanced image has been added to your product",
                                     {className: 'magento',width:300, height:100, okLabel: "close",
                                         ok:function(win) {return true;}});
@@ -143,10 +144,32 @@ $_block = $this;
 				// alert(transport.responseText);
                 console.log(transport.responseText);
                 var res = JSON.parse(transport.responseText);
-                $(selectElement).next().firstDescendant().src = res.resultImageURL;
-                $(selectElement).next().firstDescendant().setAttribute("data-trackId", res.trackId);
-                $(selectElement).next().setStyle({'display':"block"});
-                $(selectElement).setStyle({'display':"none"});
+                if(res.status == "fail"){
+                    if(res["subscription"] == "malabi-user-not-set") {
+                        Dialog.alert("<b>Background Removal by Malabi</b> <br> Please add your credentials to Malabi Extension",
+                            {
+                                className: 'magento', width: 300, height: 100, okLabel: "close",
+                                ok: function (win) {
+                                    return true;
+                                }
+                            });
+                    }
+                    if(res["subscription"] == "not-available") {
+                        Dialog.alert("<b>Background Removal by Malabi</b> <br>You do not have a valid subscription.<br> Please check you account in your extension",
+                            {
+                                className: 'magento', width: 300, height: 100, okLabel: "close",
+                                ok: function (win) {
+                                    return true;
+                                }
+                            });
+                    }
+
+                } else {
+                    $(selectElement).next().firstDescendant().src = res.resultImageURL;
+                    $(selectElement).next().firstDescendant().setAttribute("data-trackId", res.trackId);
+                    $(selectElement).next().setStyle({'display': "block"});
+                    $(selectElement).setStyle({'display': "none"});
+                }
                 }
             });
 

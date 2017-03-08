@@ -74,6 +74,8 @@ $model  = Mage::getModel('productclick/productclick')->load(1);
 </form>
 
 <script>
+    var malabi_userId = <?php echo $userid; ?>;
+    var malabi_userToken = "<?php echo $token; ?>";
 function clickme()
 {
 url = 'http://sandbox.users.malabi.co/UsersServer/web/subscribeUser?userId=<?php echo $userid; ?>&userToken=<?php echo $token; ?>';
