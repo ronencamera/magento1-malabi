@@ -8,6 +8,7 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
     public function createuserAction(){
 
 
+
         try {
             $datas = array('firstName' => 'John',
                 'lastName' => 'Smith',
@@ -85,6 +86,23 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
     public function indexAction() {
 
         if ($data = $this->getRequest()->getParam('product_id')) {
+
+            $model  = Mage::getModel('productclick/productclick')->load(1);
+            $userid =  $model->getUserid();
+            $token =  $model->getToken();
+            if(empty($userId) || empty($token)){
+                echo json_encode(
+                    [
+                        'status' => 'fail',
+                        'subscription' => 'malabi-user-not-set',
+                        'message' => 'could not retrieve info, check your Malabi Account'
+                    ]
+                );
+                exit;
+
+            }
+
+
             try {
                 $product = Mage::getModel('catalog/product')->load($this->getRequest()->getParam('product_id'));
 

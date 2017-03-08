@@ -2,6 +2,8 @@
 $model  = Mage::getModel('productclick/productclick')->load(1);
 		$userid =  $model->getUserid();
 		$token =  $model->getToken();
+
+
 ?>
     <form id="edit_form" action="<?php echo $this->getUrl('*/*/subscription', array('id' => 1)); ?>" method="post" enctype="multipart/form-data"><div><input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>"></div>
 	
@@ -74,7 +76,7 @@ $model  = Mage::getModel('productclick/productclick')->load(1);
 <script>
 function clickme()
 {
-url = 'https://users.malabi.co/UsersServer/web/subscribeUser?userId=<?php echo $userid; ?>&userToken=<?php echo $token; ?>';
+url = 'http://sandbox.users.malabi.co/UsersServer/web/subscribeUser?userId=<?php echo $userid; ?>&userToken=<?php echo $token; ?>';
 var newtab = window.open( '', '_blank' );
 newtab.location = url;
 
