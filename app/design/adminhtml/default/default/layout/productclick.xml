@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <productclick_adminhtml_productclick_index>
+        <reference name="content">
+         <!--   <block type="productclick/adminhtml_productclick" name="productclick" />-->
+        </reference>
+    </productclick_adminhtml_productclick_index>
+
+</layout>

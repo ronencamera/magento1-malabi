@@ -1,17 +1,27 @@
 index.php
 .idea/
-/app/*
+
 /app/code/*
 /code/community/*
 /code/core/*
 /code/local/*
+
+!/app/
 !/app/code
 !/app/code/local
 !/app/code/local/Camera
 !/app/code/local/Mage
 !/app/code/local/Camera/Malabi
 
-!/app/design/adminhtml/default/
+/app/design/*
+/app/design/adminhtml/*
+
+
+!/app/design
+!/app/design/adminhtml
+!/app/design/adminhtml/default
+!/app/design/adminhtml/default/default/layout
+!/app/design/adminhtml/default/default/template
 
 /app/etc/*
 /app/etc/modules/*

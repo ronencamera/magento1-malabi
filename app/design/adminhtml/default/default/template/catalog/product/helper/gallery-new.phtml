@@ -1,0 +1,321 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for block Mage_Adminhtml_Block_Catalog_Product_Helper_Form_Gallery_Content
+ */
+?>
+<?php
+$_block = $this;
+/* @var $_block Mage_Adminhtml_Block_Catalog_Product_Helper_Form_Gallery_Content */
+?>
+<div id="<?php echo $_block->getHtmlId() ?>" >
+<ul class="messages">
+    <li class="notice-msg">
+        <ul>
+            <li>
+            <?php echo Mage::helper('catalog')->__('Image type and information need to be specified for each store view.'); ?>
+            </li>
+        </ul>
+    </li>
+</ul>
+<div class="grid">
+<table cellspacing="0" class="data border" id="<?php echo $_block->getHtmlId() ?>_grid" width="100%">
+    <col width="1" />
+    <col width="1" />
+    <col  />
+    <col width="70" />
+    <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
+    <col />
+    <?php endforeach; ?>
+    <col width="70" />
+    <col width="70" />
+    <thead>
+        <tr class="headings">
+            <th><?php echo Mage::helper('catalog')->__('Image') ?></th>
+            <th><?php echo Mage::helper('catalog')->__('Enhanced Image') ?></th>
+            <th><?php echo Mage::helper('catalog')->__('Label') ?></th>
+            <th><?php echo Mage::helper('catalog')->__('Sort Order') ?></th>
+            <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
+            <th><?php echo $type['label'] ?></th>
+            <?php endforeach; ?>
+            <th><?php echo Mage::helper('catalog')->__('Exclude') ?></th>
+            <th class="last"><?php echo Mage::helper('catalog')->__('Remove') ?></th>
+        </tr>
+    </thead>
+    <tbody id="<?php echo $_block->getHtmlId() ?>_list">
+        <tr id="<?php echo $_block->getHtmlId() ?>_template" class="template no-display">
+                <td class="cell-image" ><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('__file__');"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div>
+                    <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;border: 1px solid rgba(174, 174, 174, 0);" alt="" />
+
+				<script type="text/javascript">
+                    Event.observe(window, "load", function(){
+                        <?php echo $_block->getJsObjectName(); ?>.malabiAddRow = function() {
+                            var newImage = {};
+                            newImage.url = "http://ec2-54-82-245-66.compute-1.amazonaws.com/media/catalog/product/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.url;
+                            newImage.file = "/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.file;
+                            newImage.label = '';
+                            newImage.position = this.getNextPosition();
+                            newImage.disabled = 0;
+                            newImage.removed = 0;
+                            this.images.push(newImage);
+                            this.container.setHasChanges();
+                            this.updateImages();
+
+                            console.log(this.images);
+                        };
+                    });
+                    function addImage(ele){
+                        console.log(ele);
+                        var eleImage = $(ele).up().siblings()[0];
+                        var track = $(eleImage).getAttribute('data-trackid');
+                        var reloadurl = '<?php echo $this->getUrl("productclick/product/addimage")."product_id/" ?>' +ele.getAttribute("value")+'/trackid/'+track;
+                        console.log(reloadurl);
+                        new Ajax.Request(reloadurl, {
+                            method: 'get',
+                            onLoading: function (transport) {
+                                // $('parent_id').update('Searching...');
+                            },
+                            onComplete: function(transport) {
+                                //   $('parent_id').update(transport.responseText);
+                                // alert(transport.responseText);
+                                console.log(transport.responseText);
+                                Dialog.alert("Enhanced image has been added to your product",
+                                    {className: 'magento',width:300, height:100, okLabel: "close",
+                                        ok:function(win) {return true;}});
+
+                            }
+                        });
+
+                    }
+        function setdata(selectElement, imageObj){
+
+            console.log(imageObj);
+
+            if(imageObj["value_id"]){
+                var imageId = imageObj["value_id"];
+                var strToUrl = '/image_id/'+imageId;
+            } else {
+                var imageFile = imageObj["url"];
+                imageFile = encodeURIComponent(imageFile);
+                var strToUrl = '?image_file='+imageFile;
+            }
+
+            var reloadurl = '<?php echo $this->getUrl("productclick/product/index")."product_id/" ?>' +selectElement.getAttribute("data-id")+strToUrl;
+
+            console.log(selectElement.getAttribute("data-done"));
+            if(selectElement.getAttribute("data-done") == 1){
+                console.log("done with this one");
+            }
+            selectElement.setAttribute("data-done","1");
+
+            new Ajax.Request(reloadurl, {
+            method: 'get',
+            onLoading: function (transport) {
+               // $('parent_id').update('Searching...');
+            },
+            onComplete: function(transport) {
+                 //   $('parent_id').update(transport.responseText);
+				// alert(transport.responseText);
+                console.log(transport.responseText);
+                var res = JSON.parse(transport.responseText);
+                $(selectElement).next().firstDescendant().src = res.resultImageURL;
+                $(selectElement).next().firstDescendant().setAttribute("data-trackId", res.trackId);
+                $(selectElement).next().setStyle({'display':"block"});
+                $(selectElement).setStyle({'display':"none"});
+                }
+            });
+
+        }
+        var contentWin = null;
+        var el ="";
+
+        function touchup(ele){
+            el = ele;
+            var eleImage = $(ele).siblings()[0];
+            var track = $(eleImage).getAttribute('data-trackid');
+
+            contentWin.showCenter();
+            camera51.openEditorWithTrackId({
+                customerId: "405",
+                trackId: track
+            });
+        }
+                    Event.observe(window, "load", function() {
+
+                        contentWin = new Window( { className: 'magento',
+                            width: 920,
+                            minHeight: 650,
+                            top: 80,
+                            minimizable: false,
+                            closable:true,
+                            maximizable: false,
+                            showEffectOptions: {
+                                duration: 0.4
+                            },
+                            hideEffectOptions:{
+                                duration: 0.4
+                            },
+                            hideEffect:Element.hide,
+                            showEffect:Element.show,
+                            minWidth: 820,
+                            resizable:false,
+                            destroyOnClose: false});
+                        contentWin.getContent().update($('modal1').innerHTML);
+                        $('malabiparent').innerHTML = "";
+                        window.initCamera51({
+                            "userId": 3669,
+                            "elementId": "camera51Iframe",
+                            "apiUrl": "//api.malabi.co",
+                            "showTutorial": true
+                        });
+                    });
+
+                </script>
+			</td>
+            <td class="cell-image">
+                <div class="place-holder enhanceImageRollover" style="text-align: center;" onclick="setdata(this, <?php echo $_block->getJsObjectName(); ?>.getImageByFile('__file__'))" data-id="<?php echo $this->getRequest()->getParam('id') ?>">
+                    <span><?php echo Mage::helper('catalog')->__('Press for enhanced image preview') ?></span>
+                </div>
+                <div style="display:none;">
+                    <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="border: 1px solid #AEAEAE;"  />
+                    <button value="<?php echo $this->getRequest()->getParam('id') ?>" title="Touch up" type="button" class="scalable save" onclick="touchup(this)" style="margin-top: 10px; margin-left: 7px;"><span><span><span>Touch up</span></span></span></button>
+                    <div style="text-align: center; margin-top: 5px; margin-bottom: 5px;"> <button title="add enhanced image to product listing" value="<?php echo $this->getRequest()->getParam('id') ?>" type="button" onclick="addImage(this)" >Add image<br></div>
+                </div>
+            </td>
+            <td class="cell-label"><input type="text" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> class="input-text" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
+            <td class="cell-position"><input type="text" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> class="input-text validate-number" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
+            <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
+            <td class="cell-<?php echo $typeId ?> a-center"><input <?php if($_block->getElement()->getAttributeReadonly($typeId)) :?> disabled="disabled" <?php endif;?> type="radio" name="<?php echo $type['field'] ?>" onclick="<?php echo $_block->getJsObjectName(); ?>.setProductImages('__file__')" value="__file__" /></td>
+            <?php endforeach; ?>
+            <td class="cell-disable a-center"><input type="checkbox" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> onclick="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
+            <td class="cell-remove a-center last"><input type="checkbox" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> onclick="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
+        </tr>
+        <?php if($_block->hasUseDefault()): ?>
+        <tr id="<?php echo $_block->getHtmlId() ?>_default">
+                <td><?php echo Mage::helper('catalog')->__('Use Default Value') ?></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <?php foreach ($_block->getMediaAttributes() as $_attribute): ?>
+                <td class="a-center">
+                <?php if($_block->getElement()->canDisplayUseDefault($_attribute)): ?>
+                <input class="default-checkbox" name="use_default[]" type="checkbox" <?php if($_block->getElement()->getAttributeReadonly($_attribute->getAttributeCode())):?> disabled="disabled" <?php endif;?>  onclick="<?php echo $_block->getJsObjectName(); ?>.updateUseDefault()"
+<?php if($_block->getElement()->usedDefault($_attribute)): ?>checked<?php endif; ?> value="<?php echo $_attribute->getAttributeCode() ?>" />
+                <?php endif ?>
+                </td>
+                <?php endforeach; ?>
+                <td>&nbsp;</td>
+                <td class="last">&nbsp;</td>
+        </tr>
+    <?php endif ?>
+        <tr id="<?php echo $_block->getHtmlId() ?>-image-0">
+                <td class="cell-image"><?php echo Mage::helper('catalog')->__('No image') ?></td>
+                <td class="cell-label"><input type="hidden" />&nbsp;</td>
+                <td class="cell-position"><input type="hidden" />&nbsp;</td>
+                <?php foreach ($_block->getImageTypes() as $typeId=>$type): ?>
+                <td class="cell-<?php echo $typeId ?> a-center"><input type="radio" <?php if($_block->getElement()->getAttributeReadonly($typeId)) :?> disabled="disabled" <?php endif;?> name="<?php echo $type['field'] ?>" onclick="<?php echo $_block->getJsObjectName(); ?>.setProductImages('no_selection')" value="no_selection" /></td>
+                <?php endforeach; ?>
+                <td class="cell-disable"><input type="hidden" />&nbsp;</td>
+                <td class="cell-remove last"><input type="hidden" />&nbsp;</td>
+        </tr>
+    </tbody>
+<?php if (!$_block->getElement()->getReadonly()):?>
+    <tfoot>
+        <tr>
+            <td colspan="100" class="last" style="padding:8px">
+                <?php echo $_block->getUploaderHtml() ?>
+            </td>
+        </tr>
+    </tfoot>
+<?php endif;?>
+</table>
+</div>
+</div>
+<input type="hidden" id="<?php echo $_block->getHtmlId() ?>_save" name="<?php echo $_block->getElement()->getName() ?>[images]" value="<?php echo $_block->escapeHtml($_block->getImagesJson()) ?>" />
+<input type="hidden" id="<?php echo $_block->getHtmlId() ?>_save_image" name="<?php echo $_block->getElement()->getName() ?>[values]" value="<?php echo $_block->escapeHtml($_block->getImagesValuesJson()) ?>" />
+<script type="text/javascript">
+//<![CDATA[
+var <?php echo $_block->getJsObjectName(); ?> = new Product.Gallery('<?php echo $_block->getHtmlId() ?>', <?php if ($_block->getElement()->getReadonly()):?>null<?php else:?><?php echo $_block->getUploader()->getJsObjectName() ?><?php endif;?>, <?php echo $_block->getImageTypesJson() ?>);
+//]]>
+</script>
+<div id="loading-malabi" style=" display: none;">
+    <p class="loader" id="loading_mask_loader"><img src="http://ec2-54-82-245-66.compute-1.amazonaws.com:80/skin/adminhtml/default/default/images/ajax-loader-tr.gif" alt="Loading..." pagespeed_url_hash="1122265435" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"><br>Please wait...</p>
+</div>
+<div id="malabiparent">
+<div id="modal1" class="modal modal-wider" style="margin-bottom: -8px;display: none;">
+    <div class="modal-content" style="padding-top: 20px;padding-bottom: 5px;background-color: #393b4b;">
+
+        <div style="font-family: Roboto, sans-serif; font-size: 24px; color: white;margin-bottom: 15px;margin-left: 10px">Background Remover Edit
+        </div>
+        <button id="camera51-btn-mark-object" class="waves-effect waves-light btn-flat roboto tooltipped"
+           data-position="bottom" data-delay="50" title="Draw lines to mark areas you want to keep in the image"
+           style="color:#7cb342;font-size: 14px;padding-right: 10px; padding-left: 10px;background: inherit;border: 0px;" onclick="camera51.setColor('colorFG');">
+            <i class="material-icons left" style="color:#7cb342;padding-right: 0px;margin-right: 10px;font-size: 24px;margin-top: -4px;">add_circle</i>
+            Mark Object
+        </button>
+        <button id="camera51-btn-mark-background" class="waves-effect waves-light  btn-flat roboto tooltipped"
+           data-position="bottom" data-delay="50" title="Draw lines to mark areas you want to remove from the image"
+           style="margin-left:10px;color:#f44336;font-size: 14px;padding-right: 10px; padding-left: 10px; background: inherit;border: 0px;" onclick="camera51.setColor('colorBG');">
+            <i class="material-icons left" style="color:#f44336;padding-right: 0px;margin-right: 10px;font-size: 24px;margin-top: -4px;">remove_circle</i>
+            Mark Background
+        </button>
+        <button id="camera51-btn-undo" class="waves-effect waves-light btn-flat roboto" style="color: white;font-size: 14px;background: inherit;border: 0px;"
+           onclick="camera51.undo()">UNDO</button>
+        <br>
+        <a id="camera51-zoom-in" class="waves-effect waves-circle transparent"
+           style="position: absolute;top: 141px;left: 36px" onmousedown="camera51.onclickLongZoomIn()"
+           onmouseup="camera51.onmouseupLongZoomIn()">
+            <i class="material-icons right small zoomRippel" style="color:#393b4b;">zoom_in</i>
+        </a>
+        <a id="camera51-zoom-out" class="waves-effect waves-circle transparent"
+           style="position: absolute;top: 194px;left: 36px" onmousedown="camera51.onclickLongZoomOut()"
+           onmouseup="camera51.onmouseupLongZoomOut()">
+            <i class="material-icons right small zoomRippel" style="color:#393b4b;">zoom_out</i>
+        </a>
+    </div>
+    <div class="progress" style="margin: 0px;visibility: hidden;height: 3px" id="camera51-loader">
+        <div class="indeterminate"></div>
+    </div>
+    <div>
+        <div id="camera51Iframe" style="height:500px;width:100%"></div>
+    </div>
+    <div class="modal-footer" style="margin-top: 25px">
+        <input type="checkbox" class="filled-in" id="camera51-show-transparent" />
+        <label for="camera51-show-transparent" style="top: 23px;left: 20px; padding-left: 3px;    padding-right: 14px;" onclick="camera51.backToEdit();window.ga('send', 'event', 'Site','btn transparent', 'editor')">Transparent</label>
+        <input type="checkbox" class="filled-in" id="camera51-show-shadow" style="" />
+        <label for="camera51-show-shadow" style="top: 23px;left: 42px; padding-left: 3px;" onclick="camera51.backToEdit();window.ga('send', 'event', 'Site','btn shadow', 'editor')">Remove shadow</label>
+        <button id="camera51-btn-save-image" class=" btn white-text   waves-light btn-flat btn-large malabiBG "
+           onclick="camera51.saveImage()"
+           style="font-size: 17px;margin-right: 9px; margin-left: 23px;    float: right;">Save Changes</button>
+        <button id="camera51-btn-show-result" class="waves-effect waves-teal btn-flat btn "
+           style="font-size: 17px; margin-left: 10px;     float: right;"
+           onclick="camera51.showResult()">preview result</button>
+    </div>
+</div>
+</div>
+<script type='text/javascript' src='//d8tv8no6fkiw3.cloudfront.net/website/assets/camera51.js?ver=1.0.0'></script>
+<link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons" type="text/css" />

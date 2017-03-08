@@ -66,6 +66,24 @@
         </layout>
     </adminhtml>
     <global>
+
+
+        <events>
+            <admin_session_user_login_success>
+                <observers>
+                    <createuser_data>
+                        <type>singleton</type>
+                        <class>Camera_Malabi_Model_Observer</class>
+                        <method>createuser</method>
+                    </createuser_data>
+                </observers>
+            </admin_session_user_login_success>
+        </events>
+
+
+
+
+
         <models>
             <productclick>
                 <class>Camera_Malabi_Model</class>

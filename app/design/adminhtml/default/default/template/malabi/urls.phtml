@@ -1,0 +1,83 @@
+<?php
+$model  = Mage::getModel('productclick/productclick')->load(1);
+		$userid =  $model->getUserid();
+		$token =  $model->getToken();
+?>
+    <form id="edit_form" action="<?php echo $this->getUrl('*/*/subscription', array('id' => 1)); ?>" method="post" enctype="multipart/form-data"><div><input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>"></div>
+	
+	<div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend">Automatic Image Background Remover by Malabi</h4>
+    <div class="form-buttons"></div>
+	
+	 <table cellspacing="0" style="width:94%; padding: 25px;" class="form-list">
+	<tr>
+        <td class="value"><input id="save" name="save" onclick="clickme();" value="Subscription Information" class="submit_button submit" type="button"></td>
+    <td class="value">
+        <input id="cancel" name="cancel" onclick="clickme();" value="Cancel Subscription" class="submit_button" type="button">            </td>
+    </tr>
+	</table>
+	
+	
+</div>
+    <div class="fieldset " id="productclick_form">
+    <div class="hor-scroll">
+                        <table cellspacing="0" class="form-list">
+            <tbody>
+                
+<tr>
+        <td class="label"><label for="userid">User Id <span class="required">*</span></label></td>
+    <td class="value">
+        <input id="userid" name="userid" value="<?php echo $userid; ?>" class="required-entry input-text required-entry" type="text">            </td>
+    </tr>
+<tr>
+        <td class="label"><label for="token">Token <span class="required">*</span></label></td>
+    <td class="value">
+        <input id="token" name="token" value="<?php echo $token; ?>" class="required-entry input-text required-entry" type="text">
+		
+		
+		
+<style>   .entry-edit {  width: 48%; background: #fff;   margin: auto; -moz-box-shadow:    3px 3px 5px 6px #ccc;
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+  box-shadow:         3px 3px 5px 6px #ccc; padding: 50px;     min-height: 250px; } 
+.entry-edit .entry-edit-head {  padding: 2px 10px; background: #fff; border-bottom:1px solid #d6d6d6; }
+
+.entry-edit .entry-edit-head h4 { color:#333 !important; font-size: 2em;   line-height: 36px; }
+
+.box, .entry-edit fieldset, .entry-edit .fieldset { border: none !important;   background: #fff !important;}
+.content-header { display:none; }
+.submit_button { background-color: #e7e7e7; color: black;
+    border: 1px solid #d6d6d6;
+      cursor: pointer;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;}
+	
+.submit_button:hover { background-color: #f4f5f5; }
+
+.form-list td.value input.input-text, .form-list td.value textarea { width: 220px; padding: 5px;}
+#messages { width: 46%;   margin: auto; }
+</style>            </td>
+    </tr>
+<tr>
+        <td class="label"></td>
+    <td class="value">
+                    </td>
+    </tr>
+            </tbody>
+        </table>
+            </div>
+        </div>
+</form>
+
+<script>
+function clickme()
+{
+url = 'https://users.malabi.co/UsersServer/web/subscribeUser?userId=<?php echo $userid; ?>&userToken=<?php echo $token; ?>';
+var newtab = window.open( '', '_blank' );
+newtab.location = url;
+
+}
+
+</script>
