@@ -54,27 +54,39 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
         if ($data = $this->getRequest()->getParam('product_id')) {
             try {
                 $product = Mage::getModel('catalog/product')->load($this->getRequest()->getParam('product_id'));
+
                 $trackId = $this->getRequest()->getParam('trackid');
 
-                try {
-                    $imgPath = '/tmp/malabi_' . $trackId . '.jpeg';
 
+                if($this->getRequest()->getParam('newimage')){
+                    $trackImageAddition =  "_". md5($this->getRequest()->getParam('newimage'));
+                    $imageTrackId = $trackId.$trackImageAddition;
+                    $imageUrl = $this->getRequest()->getParam('newimage');
+                    if(stripos($imageUrl, "http") === false){
+                        $imageUrl = "http:".$imageUrl;
+                    }
+                    copy($imageUrl, '/tmp/malabi_'.$imageTrackId.'.jpeg');
+                } else{
+                    $imageTrackId = $trackId;
+                }
+
+                try {
+                    $imgPath = '/tmp/malabi_' . $imageTrackId . '.jpeg';
                     if (!file_exists($imgPath)) {
-                        echo "The file $filename not found";
+                        echo "The file $imgPath not found";
                         exit;
                     }
-                    $product->addImageToMediaGallery($imgPath, 'media_image', false, false);
+                    $product->addImageToMediaGallery($imgPath, null, true, false);
                     $product->save();
-//                    var_dump(__LINE__,$product->getMediaGalleryImages());exit;
                 } catch (Exception $e) {
-                    var_dump(__LINE__, $e);
+                    var_dump(__LINE__, $e->getMessage());
                     exit;
                 }
                 echo "done"; exit;
 
 
             } catch (Exception $e) {
-                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                var_dump(__LINE__, $e->getMessage());
 
 
             }
@@ -91,8 +103,6 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
 
             $userId =  $model->getUserid();
             $token =  $model->getToken();
-           // var_dump($userId, $token);
-
 
             if(empty($userId) || empty($token)){
                 echo json_encode(
@@ -157,13 +167,8 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
                     $trackId = $product->getTrackid();
                 }
 
-
-
                 //
                 $imageTrackId = $trackId.$trackImageAddition;
-              //  $token = 'user_87af282e57704f50b90909ba40ba016936c17b5b8e584223b19b22432cc95212';
-              //  $userId = '3669';
-                // end EXAMPLE
 
                 //check subscription
                 if($this->checkSubscription($userId, $token ) == 0){

@@ -93,10 +93,13 @@ $_block = $this;
                         console.log(ele);
                         var eleImage = $(ele).up().siblings()[0];
                         var track = $(eleImage).getAttribute('data-trackid');
+                        var imageSrc = $(eleImage).getAttribute('src');
+                        console.log(eleImage);
                         var reloadurl = '<?php echo $this->getUrl("productclick/product/addimage")."product_id/" ?>' +ele.getAttribute("value")+'/trackid/'+track;
                         console.log(reloadurl);
                         new Ajax.Request(reloadurl, {
-                            method: 'get',
+                            method: 'post',
+                            parameters: "newimage="+imageSrc,
                             onLoading: function (transport) {
                                 // $('parent_id').update('Searching...');
                             },
