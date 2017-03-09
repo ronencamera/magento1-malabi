@@ -53,7 +53,7 @@ class Camera_Malabi_Model_Observer {
                     }
                 }
                 else {
-                    Mage::getSingleton('adminhtml/session')->addWarning("Error in Malabi extension - please go to module to fix.");
+                    Mage::getSingleton('adminhtml/session')->addWarning("Malabi Error- to fix go to the <b>background remover by malabi</b> tag (on the menu bar).");
                 }
 
                 //echo $response->getBody();

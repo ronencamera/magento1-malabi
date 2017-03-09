@@ -149,7 +149,7 @@ $_block = $this;
                 var res = JSON.parse(transport.responseText);
                 if(res.status == "fail"){
                     if(res["subscription"] == "malabi-user-not-set") {
-                        Dialog.alert("<b>Background Removal by Malabi</b> <br> Please add your credentials to Malabi Extension",
+                        Dialog.alert("<b>Background Removal by Malabi</b> <br>Problem with registration - Please check you account in Background Remover extension",
                             {
                                 className: 'magento', width: 300, height: 100, okLabel: "close",
                                 ok: function (win) {
@@ -158,7 +158,7 @@ $_block = $this;
                             });
                     }
                     if(res["subscription"] == "not-available") {
-                        Dialog.alert("<b>Background Removal by Malabi</b> <br>You do not have a valid subscription.<br> Please check you account in your extension",
+                        Dialog.alert("<b>Background Removal by Malabi</b> <br>Subscribe to continue.<br> Please check you account in Background Remover extension",
                             {
                                 className: 'magento', width: 300, height: 100, okLabel: "close",
                                 ok: function (win) {
