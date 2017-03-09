@@ -88,8 +88,12 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
         if ($data = $this->getRequest()->getParam('product_id')) {
 
             $model  = Mage::getModel('productclick/productclick')->load(1);
-            $userid =  $model->getUserid();
+
+            $userId =  $model->getUserid();
             $token =  $model->getToken();
+           // var_dump($userId, $token);
+
+
             if(empty($userId) || empty($token)){
                 echo json_encode(
                     [
@@ -143,14 +147,6 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
                     $originalUrl .= '?' . $parseUrl['query'];
                 }
 
-                /*
-                 *
-                 * From DB get the image object
-
-
-                $token = retrieve from module configuration
-                $userId = retrieve from module configuration
-                */
 
                 if(empty($product->getTrackid())){
 
@@ -165,8 +161,8 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
 
                 //
                 $imageTrackId = $trackId.$trackImageAddition;
-                $token = 'user_87af282e57704f50b90909ba40ba016936c17b5b8e584223b19b22432cc95212';
-                $userId = '3669';
+              //  $token = 'user_87af282e57704f50b90909ba40ba016936c17b5b8e584223b19b22432cc95212';
+              //  $userId = '3669';
                 // end EXAMPLE
 
                 //check subscription

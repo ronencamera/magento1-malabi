@@ -45,7 +45,9 @@ class Camera_Malabi_Model_Observer {
                     $model = Mage::getModel('productclick/productclick');
                     $model->setData($savedata);
                     try {
-                        $model->save();
+                        //$model->save();
+
+                        $model->setId(1)->save();
                         Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('productclick')->__('Your malabi data was successfully saved'));
                     }
                     catch (Exception $e) {

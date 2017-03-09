@@ -183,7 +183,13 @@ $_block = $this;
             var track = $(eleImage).getAttribute('data-trackid');
 
             contentWin.showCenter();
-            camera51.openEditorWithTrackId({
+            window.camera51.obj.callbackFuncSave = function (resultUrl) {
+                contentWin.close();
+                $(eleImage).setAttribute('src', resultUrl);
+                //self.uploadFile(resultUrl, trackId);
+
+            };
+            window.camera51.openEditorWithTrackId({
                 customerId: "405",
                 trackId: track
             });
@@ -208,7 +214,12 @@ $_block = $this;
                             minWidth: 820,
                             resizable:false,
                             destroyOnClose: false});
-                        contentWin.getContent().update($('modal1').innerHTML);
+                        try {
+                            contentWin.getContent().update($('modal1').innerHTML);
+                        } catch (e){
+
+                        }
+
                         $('malabiparent').innerHTML = "";
                         window.initCamera51({
                             "userId": 3669,
