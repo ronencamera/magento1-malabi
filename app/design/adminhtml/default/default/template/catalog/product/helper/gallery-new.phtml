@@ -70,7 +70,7 @@ $_block = $this;
     <tbody id="<?php echo $_block->getHtmlId() ?>_list">
         <tr id="<?php echo $_block->getHtmlId() ?>_template" class="template no-display">
                 <td class="cell-image" ><div class="place-holder" onmouseover="<?php echo $_block->getJsObjectName(); ?>.loadImage('__file__');"><span><?php echo Mage::helper('catalog')->__('Roll Over for preview') ?></span></div>
-                    <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="display:none;border: 1px solid rgba(174, 174, 174, 0);" alt="" />
+                    <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABYElEQVR42u3ZwQmAMBQFQRU7Sv8lpKbYQI7Coswc5d2WD0LOtdaxM+fcfh9j2L+4vw5SAsQEiAkQEyAmQEyA2P2V/+W/7l1ATICYADEBYgLEBIgJEDu9B7R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxB6KN5Q4wR/MdAAAAABJRU5ErkJggg==);display:none;border: 1px solid #aeaeae;" alt="" />
 
 				<script type="text/javascript">
 //                    Event.observe(window, "load", function(){
@@ -238,8 +238,8 @@ $_block = $this;
                 <div class="place-holder enhanceImageRollover" style="text-align: center;" onclick="setdata(this, <?php echo $_block->getJsObjectName(); ?>.getImageByFile('__file__'))" data-id="<?php echo $this->getRequest()->getParam('id') ?>">
                     <span><?php echo Mage::helper('catalog')->__('Press for enhanced image preview') ?></span>
                 </div>
-                <div style="display:none;">
-                    <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="border: 1px solid #AEAEAE;"  />
+                <div style="display:none; ">
+                    <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="border: 1px solid #AEAEAE;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABYElEQVR42u3ZwQmAMBQFQRU7Sv8lpKbYQI7Coswc5d2WD0LOtdaxM+fcfh9j2L+4vw5SAsQEiAkQEyAmQEyA2P2V/+W/7l1ATICYADEBYgLEBIgJEDu9B7R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxB6KN5Q4wR/MdAAAAABJRU5ErkJggg==)"  />
                     <button value="<?php echo $this->getRequest()->getParam('id') ?>" title="Touch up" type="button" class="scalable save" onclick="touchup(this)" style="margin-top: 10px; margin-left: 7px;"><span><span><span>Touch up</span></span></span></button>
                     <div style="text-align: center; margin-top: 5px; margin-bottom: 5px;"> <button title="add enhanced image to product listing" value="<?php echo $this->getRequest()->getParam('id') ?>" type="button" onclick="addImage(this)" >Add image<br></div>
                 </div>
