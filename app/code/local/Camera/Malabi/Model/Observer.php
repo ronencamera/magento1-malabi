@@ -25,8 +25,7 @@ class Camera_Malabi_Model_Observer {
                     'acceptsMail' => 'true',
                 );
 
-                //$url = "https://users.malabi.co/UsersServer/v1/createUser";
-                $url = "https://sandbox.users.malabi.co/UsersServer/v1/createUser";
+                $url = "https://users.malabi.co/UsersServer/v1/createUser";
                 $json = json_encode($datas);
                 $client = new Zend_Http_Client($url);
                 $response =$client->setRawData($json, null)->request('POST');
