@@ -8,17 +8,16 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
     public function createuserAction(){
 
 
-
+        $email = $this->getRequest()->getParam('email');
         try {
             $datas = array('firstName' => 'John',
                 'lastName' => 'Smith',
-                'userEmail' => rand(1,222).'_test@camera51.com',
-                'userPassword' => 'Abcd1234',
+                'userEmail' => $email,
+                'userPassword' => 'mag' . rand(11112,99999),
                 'customerId' => '405',
                 'customerToken' => 'qaq2254a-75b8-40ff-9ef8-2c6ad9cfa13a',
-                'acceptsMail' => 'true',
+                'acceptsMail' => 'false',
             );
-//$url = "https://users.malabi.co/UsersServer/v1/retrieveUserData";
             $url = "https://users.malabi.co/UsersServer/v1/createUser";
             $json = json_encode($datas);
             $client = new Zend_Http_Client($url);
@@ -26,19 +25,63 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
 
            // var_dump($json);
             $response =$client->setRawData($json, null)->request('POST');
-            //var_dump($response);
+
             $result = json_decode($response->getBody (),true);
-            echo '<pre>';
-            print_r($result);
+            if(!empty($result)){
 
 
+                if($result['status'] == 'fail'){
 
-            exit;
+                    if($result['error'] == 'email_exists'){
+                        echo json_encode(
+                            [
+                                'status' => 'fail',
+                                'message' => 'email_exists'
+                            ]
+                        );
+                        exit;
+                    }
+                    echo json_encode(
+                        [
+                            'status' => 'fail',
+                            'message' => 'email_notvalid'
+                        ]
+                    );
+                    exit;
 
 
-            echo $result->userToken;
+                }
+                 else {
+                     $savedata = array('userid' => $result['user']['userId'], 'token' =>  $result['user']['userToken']);
+                     $model = Mage::getModel('productclick/productclick');
+                     $model->setData($savedata);
+                     try {
+                         $model->save();
+                       
+                     }
+                     catch (Exception $e) {
+                         Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+                     }
 
-            echo $result;
+                     echo json_encode(
+                         [
+                             'status' => 'success',
+                             'subscription' => 'subscribed',
+                             'userToken' => $result['user']['userToken'],
+                             'userId' => $result['user']['userId']
+                         ]
+                     );
+                     exit;
+                 }
+            } else {
+                echo json_encode(
+                    [
+                        'status' => 'fail',
+                        'message' => 'could not retrieve info, check your Malabi Account'
+                    ]
+                );
+            }
+
 
 //echo $response->getBody();
         } catch (Exception $ex) {

@@ -2,24 +2,44 @@
 $model  = Mage::getModel('productclick/productclick')->load(1);
 		$userid =  $model->getUserid();
 		$token =  $model->getToken();
+        $userEmpty = 0;
+		if(empty($userid)){
+            $userEmpty = 1;
+        }
 
+        $userEmail = Mage::getSingleton('admin/session')->getUser()->getEmail();
 
 ?>
+
+
     <form id="edit_form" action="<?php echo $this->getUrl('*/*/subscription', array('id' => 1)); ?>" method="post" enctype="multipart/form-data"><div><input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>"></div>
 	
-	<div class="entry-edit-head">
-    <h4 class="icon-head head-edit-form fieldset-legend">Automatic Image Background Remover by Malabi</h4>
+	<div class="entry-edist-headnononon">
+    <h4 class="">Automatic Image Background Remover by Malabi</h4>
     <div class="form-buttons"></div>
-	
+        <?php if ( $userEmpty ==1) {  ?>
+
+            <table cellspacing="0" style="width:94%; padding: 25px;" class="form-list">
+                <tr>
+                    <td class="value">
+                     <input id="save" name="save" onclick="activateMalabi();" value="Activate Malabi" class="submit_button submit" type="button">
+                    </td>
+
+                </tr>
+            </table>
+
+        <?php } ?>
+        <?php if ( $userEmpty ==0) {  ?>
 	 <table cellspacing="0" style="width:94%; padding: 25px;" class="form-list">
 	<tr>
-        <td class="value"><input id="save" name="save" onclick="clickme();" value="Subscription Information" class="submit_button submit" type="button"></td>
+        <td class="value">
+            <input id="save" name="save" onclick="clickme();" value="Subscription Information" class="submit_button submit" type="button"></td>
     <td class="value">
         <input id="cancel" name="cancel" onclick="clickme();" value="Cancel Subscription" class="submit_button" type="button">            </td>
     </tr>
 	</table>
-	
-	
+
+            <?php } ?>
 </div>
     <div class="fieldset " id="productclick_form">
     <div class="hor-scroll">
@@ -79,38 +99,271 @@ $model  = Mage::getModel('productclick/productclick')->load(1);
 
     Event.observe(window, "load", function() {
 
-//        if(malabi_userId == ''){
-//            console.log(malabi_userId);
-//            Dialog.confirm($('requestemail').innerHTML, {className:"alphacube", width:400,
-//                okLabel: "login", cancelLabel: "cancel",
-//                onOk:function(win){
-//                    $('login_error_msg').innerHTML='Login or password inccorect';
-//                    $('login_error_msg').show();
-//                    Windows.focusedWindow.updateHeight();
-//                    new Effect.Shake(Windows.focusedWindow.getId()); return false;
-//            }
-//            });
-//        }
+        contentWin = new Window( { className: 'magento',
+            maxWidth: 350,
+            minHeight: 200,
+            maxHeight: 200,
+            top: 80,
+            minimizable: false,
+            closable:true,
+            maximizable: false,
+            showEffectOptions: {
+                duration: 0.4
+            },
+            hideEffectOptions:{
+                duration: 0.4
+            },
+            hideEffect:Element.hide,
+            showEffect:Element.show,
+            minWidth: 300,
+            resizable:false,
+            destroyOnClose: false});
+        try {
+            contentWin.getContent().update($('requestemail').innerHTML);
+        } catch (e){
 
+        }
 
     });
 
 function clickme()
 {
-    url = 'http://sandbox.users.malabi.co/UsersServer/web/subscribeUser?userId=<?php echo $userid; ?>&userToken=<?php echo $token; ?>';
+    url = 'https://users.malabi.co/UsersServer/web/subscribeUser?userId=<?php echo $userid; ?>&userToken=<?php echo $token; ?>';
     var newtab = window.open( '', '_blank' );
     newtab.location = url;
 
 }
 
+function sendActivation() {
+
+    var email = $$('#malabi-activation-email')[0].value;
+    var createUser = '<?php echo $this->getUrl("productclick/product/createuser")."email/" ?>' +email;
+
+    var bodyJson = '{"firstName":"","userEmail":"'+ email +'","userPassword":"'+makeid()+'","acceptsMail":"true"}';
+    new Ajax.Request(createUser, {
+        method: 'post',
+        parameters: "email="+email,
+        contentType:"application/x-www-form-urlencoded",
+        onLoading: function (transport) {
+
+        },
+        onComplete: function(transport) {
+            console.log(transport.responseText);
+            var res = JSON.parse(transport.responseText);
+            if(res.status == "fail"){
+                if(res["message"] == "email_exists") {
+                    console.log("This email already exists in the Malabi database - please insert different email for activation");
+                    $('malabi-email-message').update( "This email already exists in the Malabi database - please insert different email for activation");
+                }
+                if(res["message"] == "email_notvalid") {
+                    console.log("This email is not valid - please insert different email for activation");
+                    $('malabi-email-message').update( "This email is not valid - please insert different email for activation");
+                }
+
+            } else {
+//                $(selectElement).next().firstDescendant().src = res.resultImageURL;
+//                $(selectElement).next().firstDescendant().setAttribute("data-trackId", res.trackId);
+//                $(selectElement).next().setStyle({'display': "block"});
+//                $(selectElement).setStyle({'display': "none"});
+            }
+
+        }
+    });
+}
+    function makeid()
+    {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 8; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
 </script>
 
 <div id="requestemail" style="display:none">
     <p><span id='login_error_msg' class="login_error" style="display:none">&nbsp;</span></p>
     <div style="clear:both"></div>
-    <p>There was a problem in creating an account. To create an account for Background Removal, please probide email and password. </p>
-    <p><span class="login_label">login</span> <span class="login_input"><input type="text"/></span></p>
-    <div style="clear:both"></div>
-    <p><span class="login_label">password</span> <span class="login_input"><input type="password"/></span></p>
+    <h4>Malabi Activation</h4>
+    <br>
+
+    <p>
+        <span class="login_label">email</span> <span class="email_input">
+            <input id="malabi-activation-email"  type="text" value="<?php echo $userEmail ?>" style="width: 250px;"/></span>
+        <span id="malabi-email-message" style="color:red"></span>
+        <br><br><br>
+        <div style="text-align: right">
+        <button onclick="sendActivation()">activate</button>
+    </div>
+    </p>
     <div style="clear:both"></div>
 </div>
+<style>
+    .overlay_dialog {
+        background-color: #666666;
+        filter:alpha(opacity=60);
+        -moz-opacity: 0.6;
+        opacity: 0.6;
+    }
+
+    .overlay___invisible__ {
+        background-color: #666666;
+        filter:alpha(opacity=0);
+        -moz-opacity: 0;
+        opacity: 0;
+    }
+
+    .dialog_nw {
+        width: 9px;
+        height: 23px;
+        background: transparent url(default/top_left.gif) no-repeat 0 0;
+    }
+
+    .dialog_n {
+        background: transparent url(default/top_mid.gif) repeat-x 0 0;
+        height: 23px;
+    }
+
+    .dialog_ne {
+        width: 9px;
+        height: 23px;
+        background: transparent url(default/top_right.gif) no-repeat 0 0;
+    }
+
+    .dialog_e {
+        width: 2px;
+        background: transparent url(default/center_right.gif) repeat-y 0 0;
+    }
+
+    .dialog_w {
+        width: 2px;
+        background: transparent url(default/center_left.gif) repeat-y 0 0;
+    }
+
+    .dialog_sw {
+        width: 9px;
+        height: 19px;
+        background: transparent url(default/bottom_left.gif) no-repeat 0 0;
+    }
+
+    .dialog_s {
+        background: transparent url(default/bottom_mid.gif) repeat-x 0 0;
+        height: 19px;
+    }
+
+    .dialog_se {
+        width: 9px;
+        height: 19px;
+        background: transparent url(default/bottom_right.gif) no-repeat 0 0;
+    }
+
+    .dialog_sizer {
+        width: 9px;
+        height: 19px;
+        background: transparent url(default/sizer.gif) no-repeat 0 0;
+        cursor:se-resize;
+    }
+
+    .dialog_close {
+        width: 14px;
+        height: 14px;
+        background: transparent url(default/close.gif) no-repeat 0 0;
+        position:absolute;
+        top:5px;
+        left:8px;
+        cursor:pointer;
+        z-index:2000;
+    }
+
+    .dialog_minimize {
+        width: 14px;
+        height: 15px;
+        background: transparent url(default/minimize.gif) no-repeat 0 0;
+        position:absolute;
+        top:5px;
+        left:28px;
+        cursor:pointer;
+        z-index:2000;
+    }
+
+    .dialog_maximize {
+        width: 14px;
+        height: 15px;
+        background: transparent url(default/maximize.gif) no-repeat 0 0;
+        position:absolute;
+        top:5px;
+        left:49px;
+        cursor:pointer;
+        z-index:2000;
+    }
+
+    .dialog_title {
+        float:left;
+        height:14px;
+        font-family: Tahoma, Arial, sans-serif;
+        font-size:12px;
+        text-align:center;
+        width:100%;
+        color:#000;
+    }
+
+    .dialog_content {
+        overflow:auto;
+        color: #DDD;
+        font-family: Tahoma, Arial, sans-serif;
+        font-size: 10px;
+        background-color:#123;
+    }
+
+    .top_draggable, .bottom_draggable {
+        cursor:move;
+    }
+
+    .status_bar {
+        font-size:12px;
+    }
+    .status_bar input{
+        font-size:12px;
+    }
+
+    .wired_frame {
+        display: block;
+        position: absolute;
+        border: 1px #000 dashed;
+    }
+
+    /* DO NOT CHANGE THESE VALUES*/
+    .dialog {
+        display: block;
+        position: absolute;
+    }
+
+    .dialog table.table_window  {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        margin: 0px;
+        padding:0px;
+    }
+
+    .dialog table.table_window td , .dialog table.table_window th {
+        padding: 0;
+    }
+
+    .dialog .title_window {
+        -moz-user-select:none;
+    }
+
+
+</style>
+<link rel="stylesheet" type="text/css" href="/js/calendar/calendar-win2k-1.css"/>
+<link rel="stylesheet" type="text/css" href="/js/extjs/resources/css/ext-all.css"/>
+<link rel="stylesheet" type="text/css" href="/js/extjs/resources/css/ytheme-magento.css"/>
+<link rel="stylesheet" type="text/css" href="/js/prototype/windows/themes/default.css"/>
+<link rel="stylesheet" type="text/css" href="/skin/adminhtml/default/default/reset.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="/skin/adminhtml/default/default/boxes.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="/skin/adminhtml/default/default/custom.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="/skin/adminhtml/default/default/lib/prototype/windows/themes/magento.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="/skin/adminhtml/default/default/print.css" media="print"/>
+<link rel="stylesheet" type="text/css" href="/skin/adminhtml/default/default/menu.css" media="screen, projection"/>

@@ -73,30 +73,15 @@ $_block = $this;
                     <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABYElEQVR42u3ZwQmAMBQFQRU7Sv8lpKbYQI7Coswc5d2WD0LOtdaxM+fcfh9j2L+4vw5SAsQEiAkQEyAmQEyA2P2V/+W/7l1ATICYADEBYgLEBIgJEDu9B7R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxB6KN5Q4wR/MdAAAAABJRU5ErkJggg==);display:none;border: 1px solid #aeaeae;" alt="" />
 
 				<script type="text/javascript">
-//                    Event.observe(window, "load", function(){
-//                        <?php //echo $_block->getJsObjectName(); ?>//.malabiAddRow = function() {
-//                            var newImage = {};
-//                            newImage.url = "http://ec2-54-82-245-66.compute-1.amazonaws.com/media/catalog/product/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.url;
-//                            newImage.file = "/m/a/malabi_ad9c803899cb45398910eba18fa3b6e4_1.jpg";//response.file;
-//                            newImage.label = '';
-//                            newImage.position = this.getNextPosition();
-//                            newImage.disabled = 0;
-//                            newImage.removed = 0;
-//                            this.images.push(newImage);
-//                            this.container.setHasChanges();
-//                            this.updateImages();
-//
-//                            console.log(this.images);
-//                        };
-//                    });
+
                     function addImage(ele){
-                        console.log(ele);
+
                         var eleImage = $(ele).up().siblings()[0];
                         var track = $(eleImage).getAttribute('data-trackid');
                         var imageSrc = $(eleImage).getAttribute('src');
-                        console.log(eleImage);
+
                         var reloadurl = '<?php echo $this->getUrl("productclick/product/addimage")."product_id/" ?>' +ele.getAttribute("value")+'/trackid/'+track;
-                        console.log(reloadurl);
+
                         new Ajax.Request(reloadurl, {
                             method: 'post',
                             parameters: "newimage="+imageSrc,
@@ -104,10 +89,6 @@ $_block = $this;
                                 // $('parent_id').update('Searching...');
                             },
                             onComplete: function(transport) {
-                                //   $('parent_id').update(transport.responseText);
-                                // alert(transport.responseText);
-                                console.log(transport.responseText);
-
                                 Dialog.alert("Enhanced image has been added to your product",
                                     {className: 'magento',width:300, height:100, okLabel: "close",
                                         ok:function(win) {return true;}});
@@ -149,7 +130,7 @@ $_block = $this;
                 var res = JSON.parse(transport.responseText);
                 if(res.status == "fail"){
                     if(res["subscription"] == "malabi-user-not-set") {
-                        Dialog.alert("<b>Background Removal by Malabi</b> <br>Problem with registration - Please check you account in Background Remover extension",
+                        Dialog.alert('<b>Welcome to Malabi</b> <br>To activate Malabi go to the "background remover by malabi" tag on the menu bar and press "Malabi activation"',
                             {
                                 className: 'magento', width: 300, height: 100, okLabel: "close",
                                 ok: function (win) {
@@ -158,7 +139,7 @@ $_block = $this;
                             });
                     }
                     if(res["subscription"] == "not-available") {
-                        Dialog.alert("<b>Background Removal by Malabi</b> <br>Subscribe to continue.<br> Please check you account in Background Remover extension",
+                        Dialog.alert('<b>Purchase Malabi subscription</b> <br>To continue working with Malabi go to the "background remover by malabi" tag on the menu bar and press "subscription information" - "Subscribe"',
                             {
                                 className: 'magento', width: 300, height: 100, okLabel: "close",
                                 ok: function (win) {
@@ -300,7 +281,7 @@ var <?php echo $_block->getJsObjectName(); ?> = new Product.Gallery('<?php echo 
 //]]>
 </script>
 <div id="loading-malabi" style=" display: none;">
-    <p class="loader" id="loading_mask_loader"><img src="http://ec2-54-82-245-66.compute-1.amazonaws.com:80/skin/adminhtml/default/default/images/ajax-loader-tr.gif" alt="Loading..." pagespeed_url_hash="1122265435" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"><br>Please wait...</p>
+    <p class="loader" id="loading_mask_loader"><img src="/skin/adminhtml/default/default/images/ajax-loader-tr.gif" alt="Loading..." pagespeed_url_hash="1122265435" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"><br>Please wait...</p>
 </div>
 <div id="malabiparent">
 <div id="modal1" class="modal modal-wider" style="margin-bottom: -8px;display: none;">
