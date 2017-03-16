@@ -129,19 +129,19 @@ $_block = $this;
                 console.log(transport.responseText);
                 var res = JSON.parse(transport.responseText);
                 if(res.status == "fail"){
-                    if(res["subscription"] == "malabi-user-not-set") {
+                    if(res["subscription"] == "not-available") {
                         Dialog.alert('<b>Welcome to Malabi</b> <br>To activate Malabi go to the "background remover by malabi" tag on the menu bar and press "Malabi activation"',
                             {
-                                className: 'magento', width: 300, height: 200, okLabel: "close",
+                                className: 'magento', width: 300, height: 150, okLabel: "close",
                                 ok: function (win) {
                                     return true;
                                 }
                             });
                     }
-                    if(res["subscription"] == "not-available") {
+                    if(res["subscription"] == "notactive") {
                         Dialog.alert('<b>Purchase Malabi subscription</b> <br>To continue working with Malabi go to the "background remover by malabi" tag on the menu bar and press "subscription information" - "Subscribe"',
                             {
-                                className: 'magento', width: 300, height: 100, okLabel: "close",
+                                className: 'magento', width: 300, height: 150, okLabel: "close",
                                 ok: function (win) {
                                     return true;
                                 }

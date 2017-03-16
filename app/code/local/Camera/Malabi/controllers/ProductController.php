@@ -10,8 +10,8 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
 
         $email = $this->getRequest()->getParam('email');
         try {
-            $datas = array('firstName' => 'John',
-                'lastName' => 'Smith',
+            $datas = array('firstName' => '',
+                'lastName' => '',
                 'userEmail' => $email,
                 'userPassword' => 'mag' . rand(11112,99999),
                 'customerId' => '405',
@@ -156,7 +156,7 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
                 echo json_encode(
                     [
                         'status' => 'fail',
-                        'subscription' => 'malabi-user-not-set',
+                        'subscription' => 'not-available',
                         'message' => 'could not retrieve info, check your Malabi Account'
                     ]
                 );
