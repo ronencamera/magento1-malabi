@@ -89,7 +89,7 @@ $_block = $this;
                                 // $('parent_id').update('Searching...');
                             },
                             onComplete: function(transport) {
-                                Dialog.alert("Enhanced image has been added to your product",
+                                Dialog.alert("Enhanced image has been added to your product<br>To view added image refresh browser page",
                                     {className: 'magento',width:300, height:100, okLabel: "close",
                                         ok:function(win) {return true;}});
 
@@ -132,7 +132,7 @@ $_block = $this;
                     if(res["subscription"] == "malabi-user-not-set") {
                         Dialog.alert('<b>Welcome to Malabi</b> <br>To activate Malabi go to the "background remover by malabi" tag on the menu bar and press "Malabi activation"',
                             {
-                                className: 'magento', width: 300, height: 100, okLabel: "close",
+                                className: 'magento', width: 300, height: 200, okLabel: "close",
                                 ok: function (win) {
                                     return true;
                                 }
@@ -222,7 +222,9 @@ $_block = $this;
                 <div style="display:none; ">
                     <img src="<?php echo $this->getSkinUrl('images/spacer.gif')?>" width="100" style="border: 1px solid #AEAEAE;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABYElEQVR42u3ZwQmAMBQFQRU7Sv8lpKbYQI7Coswc5d2WD0LOtdaxM+fcfh9j2L+4vw5SAsQEiAkQEyAmQEyA2P2V/+W/7l1ATICYADEBYgLEBIgJEDu9B7R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxLwHxHsXEBMgJkBMgJgAMQFiAsS8B8R7FxATICZATICYADEBYgLEvAfEexcQEyAmQEyAmAAxAWICxB6KN5Q4wR/MdAAAAABJRU5ErkJggg==)"  />
                     <button value="<?php echo $this->getRequest()->getParam('id') ?>" title="Touch up" type="button" class="scalable save" onclick="touchup(this)" style="margin-top: 10px; margin-left: 7px;"><span><span><span>Touch up</span></span></span></button>
-                    <div style="text-align: center; margin-top: 5px; margin-bottom: 5px;"> <button title="add enhanced image to product listing" value="<?php echo $this->getRequest()->getParam('id') ?>" type="button" onclick="addImage(this)" >Add image<br></div>
+                    <div style="text-align: center; margin-top: 5px; margin-bottom: 5px;">
+                        <button title="add enhanced image to product listing" value="<?php echo $this->getRequest()->getParam('id') ?>" type="button" onclick="addImage(this)" >Add image<br>
+                    </div>
                 </div>
             </td>
             <td class="cell-label"><input type="text" <?php if($_block->getElement()->getReadonly()):?> disabled="disabled"<?php endif;?> class="input-text" onkeyup="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" onchange="<?php echo $_block->getJsObjectName(); ?>.updateImage('__file__')" /></td>
@@ -305,12 +307,12 @@ var <?php echo $_block->getJsObjectName(); ?> = new Product.Gallery('<?php echo 
            onclick="camera51.undo()">UNDO</button>
         <br>
         <a id="camera51-zoom-in" class="waves-effect waves-circle transparent"
-           style="position: absolute;top: 141px;left: 36px" onmousedown="camera51.onclickLongZoomIn()"
+           style="position: absolute;top: 141px;left: 36px;cursor: pointer;" onmousedown="camera51.onclickLongZoomIn()"
            onmouseup="camera51.onmouseupLongZoomIn()">
             <i class="material-icons right small zoomRippel" style="color:#393b4b;">zoom_in</i>
         </a>
         <a id="camera51-zoom-out" class="waves-effect waves-circle transparent"
-           style="position: absolute;top: 194px;left: 36px" onmousedown="camera51.onclickLongZoomOut()"
+           style="position: absolute;top: 194px;left: 36px;cursor: pointer;" onmousedown="camera51.onclickLongZoomOut()"
            onmouseup="camera51.onmouseupLongZoomOut()">
             <i class="material-icons right small zoomRippel" style="color:#393b4b;">zoom_out</i>
         </a>

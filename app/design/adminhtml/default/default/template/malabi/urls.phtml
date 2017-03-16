@@ -15,6 +15,7 @@ $model  = Mage::getModel('productclick/productclick')->load(1);
     <form id="edit_form" action="<?php echo $this->getUrl('*/*/subscription', array('id' => 1)); ?>" method="post" enctype="multipart/form-data"><div><input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>"></div>
 	
 	<div class="entry-edist-headnononon">
+    <h3 id="malabi-email-message" style="color:#00b354;margin: 5px;display: none"></h3>
     <h4 class="">Automatic Image Background Remover by Malabi</h4>
     <div class="form-buttons"></div>
         <?php if ( $userEmpty ==1) {  ?>
@@ -165,7 +166,8 @@ function sendActivation() {
                 }
 
             } else {
-                $('malabi-email-message').update( "Account created.");
+                $('malabi-email-message').update( "Malabi Activated - you can start removing image backgrounds in your catalog.");
+                $$('#malabi-email-message').invoke('setStyle', {'display':'block'});
                 contentWin.close();
                 $('userid').setAttribute('value',res["userId"]);
                 $('token').setAttribute('value',res["userToken"]);
@@ -198,7 +200,7 @@ function sendActivation() {
         <div class="login_label">Email</div> <span class="email_input">
             <input id="malabi-activation-email"  type="text" value="<?php echo $userEmail ?>" style="width: 250px;"/></span>
         <div id="malabi-email-error-message" style="color:red;margin: 5px;"></div>
-        <span id="malabi-email-message" style="color:green;margin: 5px;"></span>
+
         <br>
         <div style="text-align: right">
         <button onclick="sendActivation()">activate</button>
