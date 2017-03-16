@@ -52,12 +52,16 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
 
                 }
                  else {
+                     $magId = null;
                      $savedata = array('userid' => $result['user']['userId'], 'token' =>  $result['user']['userToken']);
                      $model = Mage::getModel('productclick/productclick');
                      $model->setData($savedata);
                      try {
+                         $magId = $model->save();
+                         $model->setId(1);
+
                          $model->save();
-                       
+
                      }
                      catch (Exception $e) {
                          Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
@@ -69,6 +73,7 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
                              'subscription' => 'subscribed',
                              'userToken' => $result['user']['userToken'],
                              'userId' => $result['user']['userId']
+
                          ]
                      );
                      exit;

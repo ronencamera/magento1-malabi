@@ -96,7 +96,7 @@ $model  = Mage::getModel('productclick/productclick')->load(1);
 <script>
     var malabi_userId = "<?php echo $userid; ?>";
     var malabi_userToken = "<?php echo $token; ?>";
-
+    var contentWin = null;
     Event.observe(window, "load", function() {
 
         contentWin = new Window( { className: 'magento',
@@ -126,6 +126,10 @@ $model  = Mage::getModel('productclick/productclick')->load(1);
 
     });
 
+    function activateMalabi(){
+        contentWin.showCenter();
+    }
+
 function clickme()
 {
     url = 'https://users.malabi.co/UsersServer/web/subscribeUser?userId=<?php echo $userid; ?>&userToken=<?php echo $token; ?>';
@@ -135,7 +139,7 @@ function clickme()
 }
 
 function sendActivation() {
-
+    $('malabi-email-error-message').update( "");
     var email = $$('#malabi-activation-email')[0].value;
     var createUser = '<?php echo $this->getUrl("productclick/product/createuser")."email/" ?>' +email;
 
@@ -153,14 +157,18 @@ function sendActivation() {
             if(res.status == "fail"){
                 if(res["message"] == "email_exists") {
                     console.log("This email already exists in the Malabi database - please insert different email for activation");
-                    $('malabi-email-message').update( "This email already exists in the Malabi database - please insert different email for activation");
+                    $('malabi-email-error-message').update( "This email already exists in the Malabi database - please insert different email for activation");
                 }
                 if(res["message"] == "email_notvalid") {
                     console.log("This email is not valid - please insert different email for activation");
-                    $('malabi-email-message').update( "This email is not valid - please insert different email for activation");
+                    $('malabi-email-error-message').update( "This email is not valid - please insert different email for activation");
                 }
 
             } else {
+                $('malabi-email-message').update( "Account created.");
+                contentWin.close();
+                $('userid').setAttribute('value',res["userId"]);
+                $('token').setAttribute('value',res["userToken"]);
 //                $(selectElement).next().firstDescendant().src = res.resultImageURL;
 //                $(selectElement).next().firstDescendant().setAttribute("data-trackId", res.trackId);
 //                $(selectElement).next().setStyle({'display': "block"});
@@ -186,13 +194,12 @@ function sendActivation() {
     <p><span id='login_error_msg' class="login_error" style="display:none">&nbsp;</span></p>
     <div style="clear:both"></div>
     <h4>Malabi Activation</h4>
-    <br>
-
     <p>
-        <span class="login_label">email</span> <span class="email_input">
+        <div class="login_label">Email</div> <span class="email_input">
             <input id="malabi-activation-email"  type="text" value="<?php echo $userEmail ?>" style="width: 250px;"/></span>
-        <span id="malabi-email-message" style="color:red"></span>
-        <br><br><br>
+        <div id="malabi-email-error-message" style="color:red;margin: 5px;"></div>
+        <span id="malabi-email-message" style="color:green;margin: 5px;"></span>
+        <br>
         <div style="text-align: right">
         <button onclick="sendActivation()">activate</button>
     </div>
