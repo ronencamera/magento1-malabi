@@ -264,6 +264,7 @@ class Camera_Malabi_ProductController extends Mage_Core_Controller_Front_Action
                     [
                         'malabiFileLocation' => '/tmp/malabi_'.$imageTrackId.'.jpeg',
                         'resultImageURL' => $result['resultImageURL'],
+                        'processingResultCode' => $result['processingResultCode'],
                         'trackId' => $imageTrackId
                     ]
                 );

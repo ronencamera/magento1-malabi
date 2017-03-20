@@ -149,10 +149,22 @@ $_block = $this;
                     }
 
                 } else {
-                    $(selectElement).next().firstDescendant().src = res.resultImageURL;
-                    $(selectElement).next().firstDescendant().setAttribute("data-trackId", res.trackId);
-                    $(selectElement).next().setStyle({'display': "block"});
-                    $(selectElement).setStyle({'display': "none"});
+
+                    if(res.resultImageURL != null){
+                        $(selectElement).next().firstDescendant().src = res.resultImageURL;
+                        $(selectElement).next().firstDescendant().setAttribute("data-trackId", res.trackId);
+                        $(selectElement).next().setStyle({'display': "block"});
+                        $(selectElement).setStyle({'display': "none"});
+                    } else {
+                        Dialog.alert('<b>Could not process image</b> <br>Try a diffrent image',
+                            {
+                                className: 'magento', width: 300, height: 150, okLabel: "close",
+                                ok: function (win) {
+                                    return true;
+                                }
+                            });
+                    }
+
                 }
                 }
             });
